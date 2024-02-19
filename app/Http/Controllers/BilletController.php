@@ -41,19 +41,24 @@ class BilletController extends Controller
 
 
     public function show($id)
-{
-    // Récupérer le billet correspondant à l'ID fourni
-    $billet = Billet::findOrFail($id);
-
-    // Construire une chaîne de données du billet
-    $billetData = "Départ: {$billet->depart}\nArrivée: {$billet->arrive}\nClasse: {$billet->classe}\nTarif: {$billet->tarif}\nHeure de Départ: {$billet->heure_depart}";
-
-    // Générer un code QR à partir de la chaîne de données du billet
-    $qrCode = QrCode::size(250)->generate($billetData);
-
-    // Retourner la vue 'billets.show' en passant le billet et le code QR comme données
-    return view('billets.show', compact('billet', 'qrCode'));
-}
+    {
+        // Récupérer le billet correspondant à l'ID fourni
+        $billet = Billet::findOrFail($id);
+    
+        // Récupérer l'utilisateur associé à ce billet
+        $user = $billet->user;
+    
+        // Construire une chaîne de données du billet et des informations de l'utilisateur
+        $userData = "Nom: {$user->name}\nEmail: {$user->email}";
+        $billetData = "Départ: {$billet->depart}\nArrivée: {$billet->arrive}\nClasse: {$billet->classe}\nTarif: {$billet->tarif}\nHeure de Départ: {$billet->heure_depart}\n\n$userData";
+    
+        // Générer un code QR à partir de la chaîne de données du billet et des informations de l'utilisateur
+        $qrCode = QrCode::size(250)->generate($billetData);
+    
+        // Retourner la vue 'billets.show' en passant le billet et le code QR comme données
+        return view('billets.show', compact('billet', 'qrCode'));
+    }
+    
 
 
     public function index()
