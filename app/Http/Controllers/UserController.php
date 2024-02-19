@@ -37,7 +37,7 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return redirect('/');
+        return redirect('/billets');
     }
 
 
@@ -51,7 +51,7 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect('/');
+            return redirect('/billets');
         }
 
         return back()->withErrors([

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Billet;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 
 class BilletController extends Controller
@@ -39,10 +41,20 @@ class BilletController extends Controller
 
 
     public function show($id)
-    {
-        $billet = Billet::findOrFail($id);
-        return view('billets.show', compact('billet'));
-    }
+{
+    // Récupérer le billet correspondant à l'ID fourni
+    $billet = Billet::findOrFail($id);
+
+    // Construire une chaîne de données du billet
+    $billetData = "Départ: {$billet->depart}\nArrivée: {$billet->arrive}\nClasse: {$billet->classe}\nTarif: {$billet->tarif}\nHeure de Départ: {$billet->heure_depart}";
+
+    // Générer un code QR à partir de la chaîne de données du billet
+    $qrCode = QrCode::size(250)->generate($billetData);
+
+    // Retourner la vue 'billets.show' en passant le billet et le code QR comme données
+    return view('billets.show', compact('billet', 'qrCode'));
+}
+
 
     public function index()
     {
