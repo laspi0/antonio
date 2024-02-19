@@ -77,12 +77,15 @@
     </style>
 </head>
 <body>
-
 <div class="container">
     <h2>Détails du Billet</h2>
 
     <table class="table">
         <tbody>
+            <tr>
+                <th>Utilisateur</th>
+                <td>{{ Auth::user()->name }}</td> <!-- Affiche le nom de l'utilisateur connecté -->
+            </tr>
             <tr>
                 <th>Classe</th>
                 <td>{{ $billet->classe }}</td>
@@ -99,16 +102,21 @@
                 <th>Heure de Départ</th>
                 <td>{{ $billet->heure_depart }}</td>
             </tr>
+            <tr>
+                <th>Tarif</th>
+                <td>{{ $billet->tarif }}</td> <!-- Affiche le tarif -->
+            </tr>
         </tbody>
     </table>
 
     <!-- Code QR -->
     <div class="qr-code">
-    <div>{!! $qrCode !!}</div>
+        <div>{!! $qrCode !!}</div>
     </div>
 
     <a href="{{ route('billets.index') }}" class="btn btn-primary">Retour à la liste des billets</a>
 </div>
+
 
 </body>
 </html>

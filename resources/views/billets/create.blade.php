@@ -80,7 +80,7 @@
         </div>
         <div>
             <label for="classe">Classe :</label>
-            <select name="classe" required>
+            <select id="classe" name="classe" required>
                 <option value="1ère classe">1ère classe</option>
                 <option value="2ème classe">2ème classe</option>
             </select>
@@ -88,10 +88,8 @@
 
         <div>
             <label for="tarif">Tarif :</label>
-            <input type="number" name="tarif" disabled required>
+            <input type="number" name="tarif" id="tarif" required>
         </div>
-
-        
 
 
         <div>
@@ -109,7 +107,6 @@
     $(document).ready(function () {
         var lieux = ['Dakar', 'Colobane', 'Hann', 'Dalifort', 'Baux-Maraichers', 'Thiaroye', 'Yembeul', 'Keur Mbaye Fall', 'PNR', 'Rufisque', 'Bargny', 'Diamniado'];
 
-        // Fonction pour ajouter les options à un menu déroulant
         function ajouterOptions(selectId, lieux) {
             var select = $('#' + selectId);
             lieux.forEach(function (lieu) {
@@ -123,44 +120,41 @@
         var lieuxZone1 = ['Dakar', 'Colobane', 'Hann', 'Dalifort', 'Baux-Maraichers'];
         var lieuxZone2 = ['Thiaroye', 'Yembeul', 'Keur Mbaye Fall', 'PNR', 'Rufisque', 'Bargny', 'Diamniado'];
 
-        // Appel de la fonction pour remplir les menus déroulants
         ajouterOptions('depart', lieux);
         ajouterOptions('arrive', lieux);
 
-        // Tarifs correspondants aux trajets
         var tarifZone1 = 500;
         var tarifZone2 = 500;
         var tarifZone1VersZone2 = 1000;
         var tarifZone2VersZone1 = 1000;
 
-        // Fonction pour mettre à jour le tarif en fonction de la sélection de départ et d'arrivée
         function mettreAJourTarif() {
             var depart = $('#depart').val();
             var arrive = $('#arrive').val();
+            var classe = $('#classe').val();
             var tarif;
 
-            if (lieuxZone1.includes(depart) && lieuxZone1.includes(arrive)) {
-                tarif = tarifZone1;
-            } else if (lieuxZone2.includes(depart) && lieuxZone2.includes(arrive)) {
-                tarif = tarifZone2;
-            } else if (lieuxZone1.includes(depart) && lieuxZone2.includes(arrive)) {
-                tarif = tarifZone1VersZone2;
-            } else if (lieuxZone2.includes(depart) && lieuxZone1.includes(arrive)) {
-                tarif = tarifZone2VersZone1;
+            if (classe === "1ère classe") {
+                tarif = 2500;
+            } else {
+                if (lieuxZone1.includes(depart) && lieuxZone1.includes(arrive)) {
+                    tarif = tarifZone1;
+                } else if (lieuxZone2.includes(depart) && lieuxZone2.includes(arrive)) {
+                    tarif = tarifZone2;
+                } else if (lieuxZone1.includes(depart) && lieuxZone2.includes(arrive)) {
+                    tarif = tarifZone1VersZone2;
+                } else if (lieuxZone2.includes(depart) && lieuxZone1.includes(arrive)) {
+                    tarif = tarifZone2VersZone1;
+                }
             }
 
-            $('input[name="tarif"]').val(tarif);
+            $('#tarif').val(tarif);
         }
 
-        // Appel de la fonction lorsqu'il y a un changement dans les menus déroulants
-        $('#depart, #arrive').change(function () {
+        $('#depart, #arrive, #classe').change(function () {
             mettreAJourTarif();
         });
 
-        // Initialiser le tarif en fonction des valeurs par défaut des menus déroulants
         mettreAJourTarif();
     });
 </script>
-
-
-
